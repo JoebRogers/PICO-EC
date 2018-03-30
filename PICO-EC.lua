@@ -46,27 +46,44 @@ end
 -- @param target The table to be copied to.
 -- @param source Either a table to copy from,
 -- or an array storing multiple source tables.
--- @param multiple Specifies whether source contains
--- more than one table.
+-- @param multipleSource Specifies whether source
+-- contains more than one table.
+-- @param exclude Either a string or an array of
+-- string containing keys to exclude from copying.
+-- @param multipleExclude Specifies whether exclude
+-- contains more than one string.
 -- @return The target table with overwritten and 
 -- appended values.
-function utilities.deepAssign(target, source, multiple)
-  multiple = multiple or false
-  if multiple == true then
-    for count = 1, #source do
-      target = utilities.deepAssign(target, source[count])
+function utilities.deepAssign(target, source, multipleSource, exclude, multipleExclude)
+    multipleSource = multipleSource or false
+    exclude = exclude or nil
+    multipleExclude = multipleExclude or false
+
+    if multipleSource then
+        for count = 1, #source do
+            target = utilities.deepAssign(target, source[count], false, exclude, multipleExclude)
+        end
+        return target
+    else
+        for k, v in pairs(source) do
+            local match = false
+            if multipleExclude then
+                for count = 1, #exclude do
+                    if (k == exclude[count]) match = true
+                end
+            elseif exclude then
+                if (k == exclude) match = true
+            end
+            if not match then
+                if type(v) == "table" then
+                    target[k] = utilities.deepAssign({}, v, false, exclude, multipleExclude)
+                else
+                    target[k] = v;
+                end
+            end
+        end
     end
-    return target
-  else
-    for k, v in pairs(source) do
-      if type(v) == "table" then
-        target[k] = utilities.deepAssign({}, v)
-      else
-        target[k] = v;
-      end
-    end
-  end
-  return target;
+    return target;
 end
 
 --- Removes a string key from a table.
