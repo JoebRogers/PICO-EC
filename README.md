@@ -1,4 +1,4 @@
-![PICO-EC](img/pico-ec-logo.png)
+![PICO-EC](img/logo.png)
 
 PICO-EC aims to provide very basic and simple support for Scenes, Entities and Components within PICO-8.
 
@@ -10,6 +10,8 @@ generic behaviours and properties.
 
 - The library itself doesn't ship with any default behaviours, however a selection of some that I think
 may be useful, including sprites, animations, transforms and physics can be found here. [To be added]
+
+PICO-EC currently sits at 784 tokens, although this isn't currently particularly optimised. 
 
 ## Setup
 
@@ -168,7 +170,7 @@ end
 
 Let's take a look at how that runs in the console!
 
--- Insert gif.
+![EC Demo](img/basic-usage-demo.gif)
 
 Perfect! With that finished, you can go off and start writing your own custom
 components, entities and scenes to run drive your games!
@@ -179,7 +181,7 @@ driven by many reusable entities and behavioours.
 
 ## Examples
 
-You can find the example code above in the TestCart folder if you want to load it up into the console
+You can find the example code above in the [cart](TestCart/pico-ec.p8) folder if you want to load it up into the console
 and play around with it!
 
 ## Reference
