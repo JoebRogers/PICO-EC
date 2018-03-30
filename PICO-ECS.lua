@@ -1,5 +1,5 @@
 ------------
--- PICO-ECS
+-- PICO-ECS - 
 -- A small entity component system
 -- library built for the fantasy
 -- console, PICO-8.
@@ -124,6 +124,10 @@ ENTITY_COUNT = 0
 --- A table used as a base for entities.
 -- This table is also assigned the 
 -- properties of _baseObject.
+-- This table can be combined with a 
+-- custom entity object with overwritten
+-- fields and functions when the
+-- createEntity() function is called.
 -- @field _components A table containing 
 -- the entity's added components.
 -- @field type A string containing the 
@@ -137,7 +141,7 @@ _entity = {
     name        = "entity_"..ENTITY_COUNT
 }
 
---Append the properties of _baseObject to _entity.
+-- Append the properties of _baseObject to _entity.
 utilities.deepAssign(_entity, _baseObject)
 
 --- Add a component to the entity's list of components.
@@ -151,6 +155,7 @@ function _entity:addComponent(component)
 
     self._components[component.name] = component
     self._components[component.name]:setParent(self)
+    self._components[component.name]:onAddedToEntity()
 end
 
 --- Removes a component from the entity's list of components.
@@ -171,12 +176,25 @@ function _entity:getComponent(name)
     return self._components[name]
 end
 
+--- Called when the entity is added to a
+-- scene with the addEntity() function.
+-- Has no default behaviour, should be 
+-- overwritten by a custom entity.
+function _entity:onAddedToScene() end
+
+--- Calls init() on all of an entity's components.
 function _entity:init()
     for k, v in pairs(self._components) do
         self._components[k]:init()
     end
 end
 
+--- Calls update() on all of an entity's components.
+-- Loops back around once all components have been 
+-- updated to remove any components that have been
+-- flagged.
+-- @return Will return early if the entity isn't
+-- active.
 function _entity:update()
     if not self.active then return end
     for k, v in pairs(self._components) do
@@ -192,6 +210,9 @@ function _entity:update()
     end
 end
 
+--- Calls draw() on all of an entity's components.
+-- @return Will return early if the entity isn't
+-- active.
 function _entity:draw()
     if not self.active then return end
     for k, v in pairs(self._components) do
@@ -201,50 +222,124 @@ function _entity:draw()
     end
 end
 
---/////////////////////////////
---Component
+--- The number of components currently 
+-- created within the application 
+-- lifetime.
 COMPONENT_COUNT = 0
+
+--- A table used as a base for components.
+-- This table is also assigned the 
+-- properties of _baseObject.
+-- This table can be combined with a 
+-- custom component object with overwritten
+-- fields and functions when the
+-- createComponent() function is called.
+-- This is the intended method for creating
+-- custom behaviours.
+-- @field parent A reference to the entity
+-- that contains this component.
+-- @field type A string containing the 
+-- object's "type".
+-- @field name A string containing the 
+-- component's name. Used for indexing 
+-- within the parent entity. 
 _component = {
     parent = nil,
     type   = "component",
     name   = "component_"..COMPONENT_COUNT
 }
+
+-- Append the properties of _baseObject to _component.
 utilities.deepAssign(_component, _baseObject)
 
-function _component:init()   end
+--- Called when the component is added to
+-- an entity with the addComponent() function.
+-- Has no default behaviour, should be 
+-- overwritten by a custom component.
+function _component:onAddedToEntity() end
+
+--- A function to initialise the component.
+-- init is a placeholder that can be overwritten
+-- upon creation of a component. Will be called
+-- once when the application calls _init() and
+-- when a new scene's onLoad() function is
+-- called.
+function _component:init() end
+
+--- A function to update the component.
+-- update is a placeholder that can be overwritten
+-- upon creation of a component. Will be called
+-- every frame when the application calls _update().
 function _component:update() end
-function _component:draw()   end
+
+--- A function to draw the component.
+-- draw is a placeholder that can be overwritten
+-- upon creation of a component. Will be called
+-- every frame when the application calls _draw().
+function _component:draw() end
+
+--- Sets a reference to the component's parent
+-- entity.
+-- @param parent The entity containing this 
+-- component.
 function _component:setParent(parent)
     self.parent = parent
 end
 
---/////////////////////////////
---Scene
+--- A table used as a base for scenes.
+-- This table can be combined with a 
+-- custom scene object with overwritten
+-- fields and functions when the
+-- createScene() function is called.
+-- @field _entities A list of all the
+-- entities currently added to this
+-- scene.
+-- @field type A string containing the 
+-- object's "type".
 _scene = {
     _entities = {},
     type ="scene"
 }
 
+--- Adds an entity to this scene's entity list.
+-- @param entity The entity to add.
+-- @return Will return early if the entity is
+-- invalid.
 function _scene:addEntity(entity)
     if not entity or not entity.type or entity.type != "entity" then return end
 
     self._entities[entity.name] = entity
+    self._entities[entity.name]:onAddedToScene()
 end
 
+--- Flags an entity for removal from the scene.
+-- @param name The name the entity is indexed
+-- by within the scene.
 function _scene:removeEntity(name)
     self._entities[name]:setRemoval(true)
 end
 
+--- Returns the entity within the scene with
+-- the passed in name.
+-- @param name The name the entity is indexed
+-- by within the scene.
+-- @return The retrieved entity.
 function _scene:getEntity(name)
     return self._entities[name]
 end
 
+--- Calls init() on all of the scene's entities.
 function _scene:init()
     for k, v in pairs(self._entities) do
         self._entities[k]:init()
     end
 end
 
+--- Calls update() on all of an scene's entities.
+-- Entity is skipped if not active.
+-- Loops back around once all entities have been 
+-- updated to remove any entities that have been
+-- flagged.
 function _scene:update()
     for k, v in pairs(self._entities) do
         if self._entities[k].active then
@@ -259,6 +354,8 @@ function _scene:update()
     end
 end
 
+--- Calls draw() on all of an scene's entities.
+-- Entity is skipped if not active.
 function _scene:draw()
     for k, v in pairs(self._entities) do
         if self._entities[k].active then
@@ -267,24 +364,51 @@ function _scene:draw()
     end
 end
 
+--- Function called when the scene is loaded
+-- in as the active scene.
+-- By default calls init() on all of it's 
+-- stored entities. If planning to overwrite
+-- the onLoad() function with a custom scene,
+-- this behvaiour should be copied over to
+-- the new scene, else no entities or 
+-- components will be initialised unless the
+-- scene is the loaded in the application 
+-- _init().
 function _scene:onLoad()
     for k, v in pairs(self._entities) do
         self._entities[k]:init()
     end
 end
 
+--- Function called during the change to a
+-- new scene. To be overwritten if any 
+-- custom behaviours need special 
+-- attention before being removed.
 function _scene:unload() end
 
---/////////////////////////////
---Factories
+--- A table storing various factory
+-- functions used by the ECS.
 factory = {}
 
+--- Creates and returns a new scene object.
+-- Will either return a new default scene or
+-- one combined with a passed in custom scene.
+-- @param scene A custom scene to combine with
+-- the default scene.
+-- @return The created scene object.
 function factory.createScene(scene)
     local sc = scene or {}
     sc = utilities.deepAssign({}, {_scene, sc}, true)
     return sc
 end
 
+--- Creates and returns a new entity object.
+-- Will either return a new default entity or
+-- one combined with a passed in custom entity.
+-- Also increments the global entity count.
+-- @param entity A custom entity to combine with
+-- the default entity.
+-- @return THe created entity object.
 function factory.createEntity(entity)
     local ent = entity or {}
     ent = utilities.deepAssign({}, {_entity, ent}, true)
@@ -292,6 +416,13 @@ function factory.createEntity(entity)
     return ent
 end
 
+--- Creates and returns a new component object.
+-- Will either return a new default component or
+-- one combined with a passed in custom component.
+-- Also increments the global component count.
+-- @param component A custom component to combine 
+-- with the default component.
+-- @return THe created component object.
 function factory.createComponent(component)
     local c = component or {}
     c = utilities.deepAssign({}, {_component, c}, true)

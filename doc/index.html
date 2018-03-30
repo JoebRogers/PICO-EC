@@ -1,0 +1,1113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><strong>PICO-ECS</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Script <code>PICO-ECS</code></h1>
+<p>PICO-ECS -
+ A small entity component system
+ library built for the fantasy
+ console, PICO-8.</p>
+<p></p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: Joeb Rogers 2018</li>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Joeb Rogers</li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#utilities.assign">utilities.assign (target, source, multiple)</a></td>
+	<td class="summary">Assigns the contents of a table to another.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilities.deepAssign">utilities.deepAssign (target, source, multiple)</a></td>
+	<td class="summary">Deep assigns the contents of a table to another.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilities.tableRemoveKey">utilities.tableRemoveKey (t, k)</a></td>
+	<td class="summary">Removes a string key from a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilities.changeScene">utilities.changeScene (currentScene, newScene)</a></td>
+	<td class="summary">Unloads a scene, and loads in the specified new one.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_baseObject:setActive">_baseObject:setActive (state)</a></td>
+	<td class="summary">Sets an object's 'active' field.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_baseObject:setRemoval">_baseObject:setRemoval (state)</a></td>
+	<td class="summary">Sets an object's 'flagRemoval' field.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:addComponent">_entity:addComponent (component)</a></td>
+	<td class="summary">Add a component to the entity's list of components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:removeComponent">_entity:removeComponent (name)</a></td>
+	<td class="summary">Removes a component from the entity's list of components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:getComponent">_entity:getComponent (name)</a></td>
+	<td class="summary">Returns a component specified by name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:onAddedToScene">_entity:onAddedToScene ()</a></td>
+	<td class="summary">Called when the entity is added to a
+ scene with the addEntity() function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:init">_entity:init ()</a></td>
+	<td class="summary">Calls init() on all of an entity's components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:update">_entity:update ()</a></td>
+	<td class="summary">Calls update() on all of an entity's components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity:draw">_entity:draw ()</a></td>
+	<td class="summary">Calls draw() on all of an entity's components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component:onAddedToEntity">_component:onAddedToEntity ()</a></td>
+	<td class="summary">Called when the component is added to
+ an entity with the addComponent() function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component:init">_component:init ()</a></td>
+	<td class="summary">A function to initialise the component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component:update">_component:update ()</a></td>
+	<td class="summary">A function to update the component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component:draw">_component:draw ()</a></td>
+	<td class="summary">A function to draw the component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component:setParent">_component:setParent (parent)</a></td>
+	<td class="summary">Sets a reference to the component's parent
+ entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:addEntity">_scene:addEntity (entity)</a></td>
+	<td class="summary">Adds an entity to this scene's entity list.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:removeEntity">_scene:removeEntity (name)</a></td>
+	<td class="summary">Flags an entity for removal from the scene.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:getEntity">_scene:getEntity (name)</a></td>
+	<td class="summary">Returns the entity within the scene with
+ the passed in name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:init">_scene:init ()</a></td>
+	<td class="summary">Calls init() on all of the scene's entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:update">_scene:update ()</a></td>
+	<td class="summary">Calls update() on all of an scene's entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:draw">_scene:draw ()</a></td>
+	<td class="summary">Calls draw() on all of an scene's entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:onLoad">_scene:onLoad ()</a></td>
+	<td class="summary">Function called when the scene is loaded
+ in as the active scene.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene:unload">_scene:unload ()</a></td>
+	<td class="summary">Function called during the change to a
+ new scene.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#factory.createScene">factory.createScene (scene)</a></td>
+	<td class="summary">Creates and returns a new scene object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#factory.createEntity">factory.createEntity (entity)</a></td>
+	<td class="summary">Creates and returns a new entity object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#factory.createComponent">factory.createComponent (component)</a></td>
+	<td class="summary">Creates and returns a new component object.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#utilities">utilities</a></td>
+	<td class="summary">A table storing various utility
+ functions used by the ECS.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_baseObject">_baseObject</a></td>
+	<td class="summary">A table used as the base for a
+ reusable GameObject.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_entity">_entity</a></td>
+	<td class="summary">A table used as a base for entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_component">_component</a></td>
+	<td class="summary">A table used as a base for components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#_scene">_scene</a></td>
+	<td class="summary">A table used as a base for scenes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#factory">factory</a></td>
+	<td class="summary">A table storing various factory
+ functions used by the ECS.</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ENTITY_COUNT">ENTITY_COUNT</a></td>
+	<td class="summary">The number of entities currently
+ created within the application
+ lifetime.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#COMPONENT_COUNT">COMPONENT_COUNT</a></td>
+	<td class="summary">The number of components currently
+ created within the application
+ lifetime.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "utilities.assign"></a>
+    <strong>utilities.assign (target, source, multiple)</strong>
+    </dt>
+    <dd>
+    Assigns the contents of a table to another.
+ Copy over the keys and values from source
+ tables to a target. Assign only shallow copies
+ to the target table. For a deep copy, use
+ deepAssign instead.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">target</span>
+         The table to be copied to.
+        </li>
+        <li><span class="parameter">source</span>
+         Either a table to copy from,
+ or an array storing multiple source tables.
+        </li>
+        <li><span class="parameter">multiple</span>
+         Specifies whether source contains
+ more than one table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The target table with overwritten and
+ appended values.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilities.deepAssign"></a>
+    <strong>utilities.deepAssign (target, source, multiple)</strong>
+    </dt>
+    <dd>
+    Deep assigns the contents of a table to another.
+ Copy over the keys and values from source
+ tables to a target. Will recurse through child
+ tables to copy over their keys/values as well.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">target</span>
+         The table to be copied to.
+        </li>
+        <li><span class="parameter">source</span>
+         Either a table to copy from,
+ or an array storing multiple source tables.
+        </li>
+        <li><span class="parameter">multiple</span>
+         Specifies whether source contains
+ more than one table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The target table with overwritten and
+ appended values.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilities.tableRemoveKey"></a>
+    <strong>utilities.tableRemoveKey (t, k)</strong>
+    </dt>
+    <dd>
+    Removes a string key from a table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         The table to modify.
+        </li>
+        <li><span class="parameter">k</span>
+         The key to remove.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilities.changeScene"></a>
+    <strong>utilities.changeScene (currentScene, newScene)</strong>
+    </dt>
+    <dd>
+    Unloads a scene, and loads in the specified new one.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">currentScene</span>
+         The currently running scene.
+        </li>
+        <li><span class="parameter">newScene</span>
+         The new scene to load in.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The newly loaded in scene.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_baseObject:setActive"></a>
+    <strong>_baseObject:setActive (state)</strong>
+    </dt>
+    <dd>
+    Sets an object's 'active' field.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+         A bool representing what
+ the field be set to.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_baseObject:setRemoval"></a>
+    <strong>_baseObject:setRemoval (state)</strong>
+    </dt>
+    <dd>
+    Sets an object's 'flagRemoval' field.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+         A bool representing what
+ the field be set to.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:addComponent"></a>
+    <strong>_entity:addComponent (component)</strong>
+    </dt>
+    <dd>
+    Add a component to the entity's list of components.
+ The added component has it's parent assiged to the
+ entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">component</span>
+         The component to add.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Returns early if the component
+ isn't valid.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:removeComponent"></a>
+    <strong>_entity:removeComponent (name)</strong>
+    </dt>
+    <dd>
+    Removes a component from the entity's list of components.
+ The specified component is flagged for removal and
+ will be removed once the other component's have
+ finished processing.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The string index of the component
+ to remove.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:getComponent"></a>
+    <strong>_entity:getComponent (name)</strong>
+    </dt>
+    <dd>
+    Returns a component specified by name.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The string index of the component
+ to retrieve.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The retrieved component.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:onAddedToScene"></a>
+    <strong>_entity:onAddedToScene ()</strong>
+    </dt>
+    <dd>
+    Called when the entity is added to a
+ scene with the addEntity() function.
+ Has no default behaviour, should be
+ overwritten by a custom entity.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:init"></a>
+    <strong>_entity:init ()</strong>
+    </dt>
+    <dd>
+    Calls init() on all of an entity's components.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:update"></a>
+    <strong>_entity:update ()</strong>
+    </dt>
+    <dd>
+    Calls update() on all of an entity's components.
+ Loops back around once all components have been
+ updated to remove any components that have been
+ flagged.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Will return early if the entity isn't
+ active.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity:draw"></a>
+    <strong>_entity:draw ()</strong>
+    </dt>
+    <dd>
+    Calls draw() on all of an entity's components.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Will return early if the entity isn't
+ active.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component:onAddedToEntity"></a>
+    <strong>_component:onAddedToEntity ()</strong>
+    </dt>
+    <dd>
+    Called when the component is added to
+ an entity with the addComponent() function.
+ Has no default behaviour, should be
+ overwritten by a custom component.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component:init"></a>
+    <strong>_component:init ()</strong>
+    </dt>
+    <dd>
+    A function to initialise the component.
+ init is a placeholder that can be overwritten
+ upon creation of a component. Will be called
+ once when the application calls _init() and
+ when a new scene's onLoad() function is
+ called.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component:update"></a>
+    <strong>_component:update ()</strong>
+    </dt>
+    <dd>
+    A function to update the component.
+ update is a placeholder that can be overwritten
+ upon creation of a component. Will be called
+ every frame when the application calls _update().
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component:draw"></a>
+    <strong>_component:draw ()</strong>
+    </dt>
+    <dd>
+    A function to draw the component.
+ draw is a placeholder that can be overwritten
+ upon creation of a component. Will be called
+ every frame when the application calls _draw().
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component:setParent"></a>
+    <strong>_component:setParent (parent)</strong>
+    </dt>
+    <dd>
+    Sets a reference to the component's parent
+ entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">parent</span>
+         The entity containing this
+ component.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:addEntity"></a>
+    <strong>_scene:addEntity (entity)</strong>
+    </dt>
+    <dd>
+    Adds an entity to this scene's entity list.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+         The entity to add.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Will return early if the entity is
+ invalid.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:removeEntity"></a>
+    <strong>_scene:removeEntity (name)</strong>
+    </dt>
+    <dd>
+    Flags an entity for removal from the scene.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name the entity is indexed
+ by within the scene.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:getEntity"></a>
+    <strong>_scene:getEntity (name)</strong>
+    </dt>
+    <dd>
+    Returns the entity within the scene with
+ the passed in name.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name the entity is indexed
+ by within the scene.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The retrieved entity.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:init"></a>
+    <strong>_scene:init ()</strong>
+    </dt>
+    <dd>
+    Calls init() on all of the scene's entities.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:update"></a>
+    <strong>_scene:update ()</strong>
+    </dt>
+    <dd>
+    Calls update() on all of an scene's entities.
+ Entity is skipped if not active.
+ Loops back around once all entities have been
+ updated to remove any entities that have been
+ flagged.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:draw"></a>
+    <strong>_scene:draw ()</strong>
+    </dt>
+    <dd>
+    Calls draw() on all of an scene's entities.
+ Entity is skipped if not active.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:onLoad"></a>
+    <strong>_scene:onLoad ()</strong>
+    </dt>
+    <dd>
+    Function called when the scene is loaded
+ in as the active scene.
+ By default calls init() on all of it's
+ stored entities. If planning to overwrite
+ the onLoad() function with a custom scene,
+ this behvaiour should be copied over to
+ the new scene, else no entities or
+ components will be initialised unless the
+ scene is the loaded in the application
+ _init().
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene:unload"></a>
+    <strong>_scene:unload ()</strong>
+    </dt>
+    <dd>
+    Function called during the change to a
+ new scene.  To be overwritten if any
+ custom behaviours need special
+ attention before being removed.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "factory.createScene"></a>
+    <strong>factory.createScene (scene)</strong>
+    </dt>
+    <dd>
+    Creates and returns a new scene object.
+ Will either return a new default scene or
+ one combined with a passed in custom scene.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">scene</span>
+         A custom scene to combine with
+ the default scene.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The created scene object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "factory.createEntity"></a>
+    <strong>factory.createEntity (entity)</strong>
+    </dt>
+    <dd>
+    Creates and returns a new entity object.
+ Will either return a new default entity or
+ one combined with a passed in custom entity.
+ Also increments the global entity count.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+         A custom entity to combine with
+ the default entity.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        THe created entity object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "factory.createComponent"></a>
+    <strong>factory.createComponent (component)</strong>
+    </dt>
+    <dd>
+    Creates and returns a new component object.
+ Will either return a new default component or
+ one combined with a passed in custom component.
+ Also increments the global component count.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">component</span>
+         A custom component to combine
+ with the default component.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        THe created component object.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "utilities"></a>
+    <strong>utilities</strong>
+    </dt>
+    <dd>
+    A table storing various utility
+ functions used by the ECS.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_baseObject"></a>
+    <strong>_baseObject</strong>
+    </dt>
+    <dd>
+    A table used as the base for a
+ reusable GameObject.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">active</span>
+         Whether the current object
+ should be processed. If disabled, this
+ object won't be updated or drawn.
+        </li>
+        <li><span class="parameter">flagRemoval</span>
+         Whether the current
+ object should be flagged for removal.
+ If set to true, the object will be
+ cleaned up once it's parent has finished
+ processing.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_entity"></a>
+    <strong>_entity</strong>
+    </dt>
+    <dd>
+    A table used as a base for entities.
+ This table is also assigned the
+ properties of _baseObject.
+ This table can be combined with a
+ custom entity object with overwritten
+ fields and functions when the
+ createEntity() function is called.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_components</span>
+         A table containing
+ the entity's added components.
+        </li>
+        <li><span class="parameter">type</span>
+         A string containing the
+ object's "type".
+        </li>
+        <li><span class="parameter">name</span>
+         A string containing the
+ entity's name. Used for indexing within
+ the scene.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_component"></a>
+    <strong>_component</strong>
+    </dt>
+    <dd>
+    A table used as a base for components.
+ This table is also assigned the
+ properties of _baseObject.
+ This table can be combined with a
+ custom component object with overwritten
+ fields and functions when the
+ createComponent() function is called.
+ This is the intended method for creating
+ custom behaviours.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">parent</span>
+         A reference to the entity
+ that contains this component.
+        </li>
+        <li><span class="parameter">type</span>
+         A string containing the
+ object's "type".
+        </li>
+        <li><span class="parameter">name</span>
+         A string containing the
+ component's name. Used for indexing
+ within the parent entity.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "_scene"></a>
+    <strong>_scene</strong>
+    </dt>
+    <dd>
+    A table used as a base for scenes.
+ This table can be combined with a
+ custom scene object with overwritten
+ fields and functions when the
+ createScene() function is called.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_entities</span>
+         A list of all the
+ entities currently added to this
+ scene.
+        </li>
+        <li><span class="parameter">type</span>
+         A string containing the
+ object's "type".
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "factory"></a>
+    <strong>factory</strong>
+    </dt>
+    <dd>
+    A table storing various factory
+ functions used by the ECS.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "ENTITY_COUNT"></a>
+    <strong>ENTITY_COUNT</strong>
+    </dt>
+    <dd>
+    The number of entities currently
+ created within the application
+ lifetime.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "COMPONENT_COUNT"></a>
+    <strong>COMPONENT_COUNT</strong>
+    </dt>
+    <dd>
+    The number of components currently
+ created within the application
+ lifetime.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-03-30 15:23:15 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
