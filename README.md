@@ -37,11 +37,9 @@ function _init()
   mainScene:init()
 end
 
-
 function _update()
   mainScene:update()
 end
-
 
 function _draw()
   mainScene:draw()
@@ -168,29 +166,21 @@ end
 
 ```
 
-Looking at where we're adding those components though, there's quite a bit of unncecssary replication being done. 
-To get around that, we can utilise one of our utility functions: `deepAssign`. `deepAssign` will copy over all keys
-and values from a source table to a target table, including any nested tables. So let's replace that section now:
+Let's take a look at how that runs in the console!
 
-```lua
--- Create components for background rect
-backgroundEnt:addComponent(factory.createComponent(_transformComponent))
-backgroundEnt:addComponent(factory.createComponent(_rectComponent))
---Let's set the player's size
-backgroundEnt:getComponent("Rect"):setSize(128, 128)
---Let's change the color of the background
-backgroundEnt:getComponent("Rect"):setColor(5)
+-- Insert gif.
 
--- Create components for player rect
-playerEnt = utilities.deepAssign(playerEnt, backgroundEnt)
---Let's set the player's size
-playerEnt:getComponent("Rect"):setSize(5, 5)
---Let's change the color of the player
-playerEnt:getComponent("Rect"):setColor(15)
-```
+Perfect! With that finished, you can go off and start writing your own custom
+components, entities and scenes to run drive your games!
 
+Whilst I do believe that this library can be quite verbose for very small PICO-8 projects,
+as your projects reach a higher scale, it can really help to cut down on tokens as your game is
+driven by many reusable entities and behavioours.
 
 ## Examples
+
+You can find the example code above in the TestCart folder if you want to load it up into the console
+and play around with it!
 
 ## Reference
 
