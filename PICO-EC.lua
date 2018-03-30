@@ -130,15 +130,24 @@ ENTITY_COUNT = 0
 -- createEntity() function is called.
 -- @field _components A table containing 
 -- the entity's added components.
+-- @field _componentsIndexed A table 
+-- containing the entity's added 
+-- components, indexed in the order
+-- they were added to the entity.
 -- @field type A string containing the 
 -- object's "type".
 -- @field name A string containing the 
 -- entity's name. Used for indexing within
 -- the scene. 
+-- @field ind The index of this entity's
+-- position within the scene's ordererd
+-- array.
 _entity = {
-    _components = {},
-    type        = "entity",
-    name        = "entity_"..ENTITY_COUNT
+    _components        = {},
+    _componentsIndexed = {},
+    type               = "entity",
+    name               = "entity_"..ENTITY_COUNT,
+    ind                = 0
 }
 
 -- Append the properties of _baseObject to _entity.
@@ -154,6 +163,8 @@ function _entity:addComponent(component)
     if not component or not component.type or component.type != "component" then return end
 
     self._components[component.name] = component
+    add(self._componentsIndexed, component)
+    component.ind = #self._componentsIndexed
     self._components[component.name]:setParent(self)
     self._components[component.name]:onAddedToEntity()
 end
@@ -184,8 +195,8 @@ function _entity:onAddedToScene() end
 
 --- Calls init() on all of an entity's components.
 function _entity:init()
-    for k, v in pairs(self._components) do
-        self._components[k]:init()
+    for v in all(self._componentsIndexed) do
+        v:init()
     end
 end
 
@@ -195,18 +206,32 @@ end
 -- flagged.
 -- @return Will return early if the entity isn't
 -- active.
+-- @return Will return before resetting indexes
+-- if no objects have been removed.
 function _entity:update()
     if not self.active then return end
-    for k, v in pairs(self._components) do
-        if self._components[k].active then
-            self._components[k]:update()
+
+    local reIndex = false
+
+    for v in all(self._componentsIndexed) do
+        if v.active then
+            v:update()
         end
     end
 
-    for k, v in pairs(self._components) do
-        if self._components[k].flagRemoval then
-            utilities.tableRemoveKey(self._components, k) 
+    for v in all(self._componentsIndexed) do
+        if v.flagRemoval then
+            utilities.tableRemoveKey(self._components, v.name)
+            del(self._componentsIndexed, v)
         end
+    end
+
+    if (not reIndex) return
+
+    local i = 1
+    for v in all(self._componentsIndexed) do
+        v.ind = i
+        i += 1
     end
 end
 
@@ -215,9 +240,9 @@ end
 -- active.
 function _entity:draw()
     if not self.active then return end
-    for k, v in pairs(self._components) do
-        if self._components[k].active then
-            self._components[k]:draw()
+    for v in all(self._componentsIndexed) do
+        if v.active then
+            v:draw()
         end
     end
 end
@@ -243,10 +268,14 @@ COMPONENT_COUNT = 0
 -- @field name A string containing the 
 -- component's name. Used for indexing 
 -- within the parent entity. 
+-- @field ind The index of this component's
+-- position within the entity's ordererd
+-- array.
 _component = {
     parent = nil,
     type   = "component",
-    name   = "component_"..COMPONENT_COUNT
+    name   = "component_"..COMPONENT_COUNT,
+    ind    = 0
 }
 
 -- Append the properties of _baseObject to _component.
@@ -294,11 +323,16 @@ end
 -- @field _entities A list of all the
 -- entities currently added to this
 -- scene.
+-- @field _entitiesIndexed A table 
+-- containing the scenes's added 
+-- entities, indexed in the order
+-- they were added to the scene.
 -- @field type A string containing the 
 -- object's "type".
 _scene = {
-    _entities = {},
-    type ="scene"
+    _entities        = {},
+    _entitiesIndexed = {},
+    type             ="scene"
 }
 
 --- Adds an entity to this scene's entity list.
@@ -309,6 +343,8 @@ function _scene:addEntity(entity)
     if not entity or not entity.type or entity.type != "entity" then return end
 
     self._entities[entity.name] = entity
+    add(self._entitiesIndexed, entity)
+    entity.ind = #self._entitiesIndexed
     self._entities[entity.name]:onAddedToScene()
 end
 
@@ -330,8 +366,8 @@ end
 
 --- Calls init() on all of the scene's entities.
 function _scene:init()
-    for k, v in pairs(self._entities) do
-        self._entities[k]:init()
+    for v in all(self._entitiesIndexed) do
+        v:init()
     end
 end
 
@@ -340,26 +376,40 @@ end
 -- Loops back around once all entities have been 
 -- updated to remove any entities that have been
 -- flagged.
+-- @return Will return before resetting indexes
+-- if no objects have been removed.
 function _scene:update()
-    for k, v in pairs(self._entities) do
-        if self._entities[k].active then
-            self._entities[k]:update()
+    local reIndex = false
+
+    for v in all(self._entitiesIndexed) do
+        if v.active then
+            v:update()
         end
     end
 
-    for k, v in pairs(self._entities) do
-        if self._entities[k].flagRemoval then
-            utilities.tableRemoveKey(self._entities, k) 
+    for v in all(self._entitiesIndexed) do
+        if v.flagRemoval then
+            utilities.tableRemoveKey(self._entities, v.name)
+            del(self._entitiesIndexed, v)
+            reIndex = true
         end
+    end
+
+    if (not reIndex) return
+
+    local i = 1
+    for v in all(self._entitiesIndexed) do
+        v.ind = i
+        i += 1
     end
 end
 
 --- Calls draw() on all of an scene's entities.
 -- Entity is skipped if not active.
 function _scene:draw()
-    for k, v in pairs(self._entities) do
-        if self._entities[k].active then
-            self._entities[k]:draw()
+    for v in all(self._entitiesIndexed) do
+        if v.active then
+            v:draw()
         end
     end
 end
@@ -408,7 +458,7 @@ end
 -- Also increments the global entity count.
 -- @param entity A custom entity to combine with
 -- the default entity.
--- @return THe created entity object.
+-- @return The created entity object.
 function factory.createEntity(entity)
     local ent = entity or {}
     ent = utilities.deepAssign({}, {_entity, ent}, true)
@@ -422,7 +472,7 @@ end
 -- Also increments the global component count.
 -- @param component A custom component to combine 
 -- with the default component.
--- @return THe created component object.
+-- @return The created component object.
 function factory.createComponent(component)
     local c = component or {}
     c = utilities.deepAssign({}, {_component, c}, true)
