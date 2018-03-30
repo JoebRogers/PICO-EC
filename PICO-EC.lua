@@ -1,6 +1,6 @@
 ------------
--- PICO-ECS - 
--- A small entity component system
+-- PICO-EC - 
+-- A small scene/entity/component
 -- library built for the fantasy
 -- console, PICO-8.
 -- @script PICO-ECS
