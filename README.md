@@ -1,4 +1,4 @@
-![PICO-EC](img/pico-ec-logo.png)
+![PICO-EC](img/logo.png)
 
 PICO-EC aims to provide very basic and simple support for Scenes, Entities and Components within PICO-8.
 
