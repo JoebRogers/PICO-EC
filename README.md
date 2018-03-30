@@ -181,7 +181,7 @@ driven by many reusable entities and behavioours.
 
 ## Examples
 
-You can find the example code above in the [cart](TestCart/pico-ec.p8) folder if you want to load it up into the console
+You can find the example code above in the [cart](cart/pico-ec.p8) folder if you want to load it up into the console
 and play around with it!
 
 ## Reference
