@@ -90,14 +90,14 @@ function _rectComponent:setColor(col)
 end
 
 function _rectComponent:init()
-  transform = self.parent:getComponent("Transform")
+  self.transform = self.parent:getComponent("Transform")
 end
 
 function _rectComponent:draw()
   local x = self.transform.x
   local y = self.transform.y
-  local w = x + self.transform.w
-  local h = y + self.transform.h
+  local w = x + self.w
+  local h = y + self.h
   rectfill(x, y, w, h, self.color)
 end
 
@@ -108,7 +108,7 @@ _moverComponent = {
 }
 
 function _moverComponent:init()
-  transform = self.parent:getComponent("Transform")
+  self.transform = self.parent:getComponent("Transform")
 end
 
 function _moverComponent:update()
@@ -134,7 +134,8 @@ local playerEnt = factory.createEntity()
 -- Create components for background rect
 backgroundEnt:addComponent(factory.createComponent(_transformComponent))
 backgroundEnt:addComponent(factory.createComponent(_rectComponent))
-backgroundEnt:addComponent(factory.createComponent(_moverComponent))
+--Let's set the player's size
+backgroundEnt:getComponent("Rect"):setSize(128, 128)
 --Let's change the color of the background
 backgroundEnt:getComponent("Rect"):setColor(5)
 
@@ -142,11 +143,12 @@ backgroundEnt:getComponent("Rect"):setColor(5)
 playerEnt:addComponent(factory.createComponent(_transformComponent))
 playerEnt:addComponent(factory.createComponent(_rectComponent))
 playerEnt:addComponent(factory.createComponent(_moverComponent))
+--Let's set the player's size
+playerEnt:getComponent("Rect"):setSize(5, 5)
 --Let's change the color of the player
 playerEnt:getComponent("Rect"):setColor(15)
 
-
-mainScene = firstScene
+mainScene = movingRectScene
 mainScene:addEntity(backgroundEnt)
 mainScene:addEntity(playerEnt)
 
@@ -174,12 +176,15 @@ and values from a source table to a target table, including any nested tables. S
 -- Create components for background rect
 backgroundEnt:addComponent(factory.createComponent(_transformComponent))
 backgroundEnt:addComponent(factory.createComponent(_rectComponent))
-backgroundEnt:addComponent(factory.createComponent(_moverComponent))
+--Let's set the player's size
+backgroundEnt:getComponent("Rect"):setSize(128, 128)
 --Let's change the color of the background
 backgroundEnt:getComponent("Rect"):setColor(5)
 
 -- Create components for player rect
 playerEnt = utilities.deepAssign(playerEnt, backgroundEnt)
+--Let's set the player's size
+playerEnt:getComponent("Rect"):setSize(5, 5)
 --Let's change the color of the player
 playerEnt:getComponent("Rect"):setColor(15)
 ```
