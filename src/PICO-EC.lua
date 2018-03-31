@@ -3,7 +3,7 @@
 -- A small scene/entity/component
 -- library built for the fantasy
 -- console, PICO-8.
--- @script PICO-ECS
+-- @script PICO-EC
 -- @author Joeb Rogers
 -- @license MIT
 -- @copyright Joeb Rogers 2018
