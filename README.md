@@ -134,7 +134,7 @@ local playerEnt = factory.createEntity()
 -- Create components for background rect
 backgroundEnt:addComponent(factory.createComponent(_transformComponent))
 backgroundEnt:addComponent(factory.createComponent(_rectComponent))
---Let's set the player's size
+--Let's set the background's size
 backgroundEnt:getComponent("Rect"):setSize(128, 128)
 --Let's change the color of the background
 backgroundEnt:getComponent("Rect"):setColor(5)
