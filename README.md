@@ -5,7 +5,7 @@ PICO-EC aims to provide very basic and simple support for Scenes, Entities and C
 - The library offers a simple solution to creating custom objects with init, update and draw cycles that
 run off of the main application states without having to manually maintain and direct their lifecycles.
 
-- Objects can then be manipulated through custom defined behvaiours. This allows for easy abstraction of
+- Objects can then be manipulated through custom defined behaviours. This allows for easy abstraction of
 generic behaviours and properties.
 
 - The library itself doesn't ship with any default behaviours, however a selection of some that I think
