@@ -192,6 +192,6 @@ and play around with it!
 
 ## Reference
 
-The API documentation for the library can be viewed [here](https://joebrogers.github.io/pico-ec/).
+The API documentation for the library can be viewed [here](https://joebrogers.com/Libraries/PICO-EC/API/1.0/).
 
 
